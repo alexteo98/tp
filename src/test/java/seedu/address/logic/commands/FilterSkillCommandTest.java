@@ -12,6 +12,8 @@ import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 
@@ -28,10 +30,17 @@ class FilterSkillCommandTest {
 
     @Test
     public void equals() {
+        Skill skill1 = new Skill("skill1");
+        Skill skill2 = new Skill("skill2");
+        HashSet skillSet1 = new HashSet<>();
+        skillSet1.add(skill1);
+        HashSet skillSet2 = new HashSet<>();
+        skillSet2.add(skill2);
+
         PersonContainsSkillPredicate firstPredicate =
-                new PersonContainsSkillPredicate(new Skill("skill1"));
+                new PersonContainsSkillPredicate(skillSet1);
         PersonContainsSkillPredicate secondPredicate =
-                new PersonContainsSkillPredicate(new Skill("skill2"));
+                new PersonContainsSkillPredicate(skillSet2);
 
         FilterSkillCommand filterFirstSkillCommand = new FilterSkillCommand(firstPredicate);
         FilterSkillCommand filterSecondSkillCommand = new FilterSkillCommand(secondPredicate);
@@ -74,10 +83,23 @@ class FilterSkillCommandTest {
         assertEquals(Arrays.asList(ALICE, ELLE, GEORGE), model.getFilteredPersonList());
     }
 
+    @Test
+    public void execute_multipleSkill_onePersonFound() {
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
+        PersonContainsSkillPredicate predicate = preparePredicate("C Python");
+        FilterSkillCommand command = new FilterSkillCommand(predicate);
+        expectedModel.updateFilteredPersonList(predicate);
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+        assertEquals(Arrays.asList(ALICE), model.getFilteredPersonList());
+    }
+
     /**
      * Parses {@code userInput} into a {@code NameContainsKeywordsPredicate}.
      */
     private PersonContainsSkillPredicate preparePredicate(String userInput) {
-        return new PersonContainsSkillPredicate(new Skill(userInput));
+        return new PersonContainsSkillPredicate(
+                Arrays.stream(userInput.split("\\s+"))
+                        .map(Skill::new)
+                        .collect(Collectors.toSet()));
     }
 }

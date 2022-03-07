@@ -2,6 +2,10 @@ package seedu.address.logic.parser;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import seedu.address.logic.commands.FilterSkillCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.PersonContainsSkillPredicate;
@@ -24,9 +28,12 @@ public class FilterSkillCommandParser implements Parser<FilterSkillCommand> {
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, FilterSkillCommand.MESSAGE_USAGE));
         }
 
-        Skill skill = new Skill(trimmedArgs);
+        String[] skillKeywords = trimmedArgs.split("\\s+");
+        Set<Skill> skillSet = Arrays.stream(skillKeywords)
+                .map(Skill::new)
+                .collect(Collectors.toSet());
 
-        return new FilterSkillCommand(new PersonContainsSkillPredicate(skill));
+        return new FilterSkillCommand(new PersonContainsSkillPredicate(skillSet));
     }
 
 }

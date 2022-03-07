@@ -37,7 +37,6 @@ public class Person {
         this.githubUsername = username;
         this.tags.addAll(tags);
         this.skillSet.addAll(skillSet);
-        //this.skillSet.add(new Skill("Python",30));
     }
 
     public Name getName() {
@@ -80,13 +79,20 @@ public class Person {
      */
     public boolean hasSkill(Skill skill) {
         requireAllNonNull(skill);
-        for (Skill s : skillSet) {
-            if (skill.isSameSkill(s)) {
-                return true;
-            }
-        }
-        return false;
+        return skillSet.stream().anyMatch(x -> skill.isSameSkill(x));
     }
+
+    /**
+     * Returns true if the person contains the skill, false otherwise.
+     *
+     * @param skillSet The set of skill to check if the person possess.
+     * @return True if the person has the all the skills in the set, false otherwise.
+     */
+    public boolean hasSkillSet(Set<Skill> skillSet) {
+        requireAllNonNull(skillSet);
+        return skillSet.stream().allMatch(this::hasSkill);
+    }
+
     /**
      * Returns true if both persons have the same name.
      * This defines a weaker notion of equality between two persons.
