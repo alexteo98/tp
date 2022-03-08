@@ -68,9 +68,9 @@ class FilterSkillCommandTest {
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0);
         PersonContainsSkillPredicate predicate = preparePredicate("NONE");
         FilterSkillCommand command = new FilterSkillCommand(predicate);
-        expectedModel.updateFilteredPersonList(predicate);
+        expectedModel.updateDisplayPersonList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        assertEquals(Collections.emptyList(), model.getFilteredPersonList());
+        assertEquals(Collections.emptyList(), model.getDisplayPersonList());
     }
 
     @Test
@@ -78,9 +78,9 @@ class FilterSkillCommandTest {
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 3);
         PersonContainsSkillPredicate predicate = preparePredicate("C");
         FilterSkillCommand command = new FilterSkillCommand(predicate);
-        expectedModel.updateFilteredPersonList(predicate);
+        expectedModel.updateDisplayPersonList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        assertEquals(Arrays.asList(ALICE, ELLE, GEORGE), model.getFilteredPersonList());
+        assertEquals(Arrays.asList(ALICE, ELLE, GEORGE), model.getDisplayPersonList());
     }
 
     @Test
@@ -88,9 +88,9 @@ class FilterSkillCommandTest {
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
         PersonContainsSkillPredicate predicate = preparePredicate("C Python");
         FilterSkillCommand command = new FilterSkillCommand(predicate);
-        expectedModel.updateFilteredPersonList(predicate);
+        expectedModel.updateDisplayPersonList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        assertEquals(Arrays.asList(ALICE), model.getFilteredPersonList());
+        assertEquals(Arrays.asList(ALICE), model.getDisplayPersonList());
     }
 
     /**

@@ -1,12 +1,20 @@
----
-layout: page
-title: User Guide
----
+#HackNet
 
 **HackNet** is a desktop application used for people to manage contact details of potential team members to work on a technical project or hackathon with. It has a simple Graphical User Interface (GUI) which displays details of your potential teammates, and works mainly via a Command Line Interface (GUI) through text commands.
 
-* Table of Contents
-{:toc}
+* Quick Start
+* Features
+  * Viewing help: help
+  * Adding a person: add
+    * Name
+    * Technical Skills
+    * Contact Information
+    * Github Profile
+  * Listing all persons: list
+  * Deleting a person: delete
+  * Saving the data
+* FAQ
+* Command summary
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -14,9 +22,9 @@ title: User Guide
 
 1. Ensure you have Java `11` or above installed in your Computer.
 
-1. Download the latest `addressbook.jar` from [here](https://github.com/se-edu/addressbook-level3/releases) (coming soon).
+1. Download the latest `HackNet.jar` from [here](https://github.com/se-edu/addressbook-level3/releases) (coming soon).
 
-1. Copy the file to the folder you want to use as the _home folder_ for your HackNet.
+1. Copy the file to the folder you want to use as the _home folder_ for HackNet.
 
 1. Double-click the file to start the app. The GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
    ![Ui](images/Ui.png)
@@ -28,7 +36,7 @@ title: User Guide
 
    * **`add`**`n/John Doe p/98765432 e/johnd@example.com g/johndoe123` : Adds a contact named `John Doe` to HackNet.
 
-   * **`delete`**`3` : Deletes the 3rd contact shown in the current list.
+   * **`delete`**` 3` : Deletes the 3rd contact shown in the current list.
 
    * **`clear`** : Deletes all contacts.
 
@@ -62,11 +70,14 @@ title: User Guide
 * Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit` and `clear`) will be ignored.<br>
   e.g. if the command specifies `help 123`, it will be interpreted as `help`.
 
+* For skill field, Skill name have to be followed by a underscore `_` and Skill proficiency level that ranges from 0 to 100 with 0 being a low proficiency level and 100.
+  e.g. `[s/SKILLNAME_SKILLPROFICENCY]…​` as `[s/Java_90]`
+
 </div>
 
 ### Viewing help : `help`
 
-Shows a message explaning how to access the help page.
+Shows a message explaining how to access the help page.
 
 ![help message](images/helpMessage.png)
 
@@ -77,7 +88,7 @@ Format: `help`
 
 Adds a person to HackNet.
 
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL g/GITHUB_USERNAME [t/TAG]…​`
+Format: `add n/NAME p/PHONE_NUMBER e/EMAIL g/GITHUB_USERNAME [t/TAG]…​ [s/SKILLNAME_SKILLPROFICENCY]…​`
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
 A person can have any number of tags (including 0)
@@ -85,7 +96,7 @@ A person can have any number of tags (including 0)
 
 Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com g/johndoe123`
-* `add n/Betsy Crowe t/friend e/betsycrowe@example.com g/betsycoder p/1234567 t/entrepeneur`
+* `add n/Betsy Crowe t/friend e/betsycrowe@example.com g/betsycoder p/1234567 t/entrepeneur s/java_80`
 
 ### Listing all persons : `list`
 
@@ -97,14 +108,14 @@ Format: `list`
 
 Edits an existing person in HackNet.
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [g/GITHUB_USERNAME] [t/TAG]…​`
+Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [g/GITHUB_USERNAME] [t/TAG]…​ [s/SKILLNAME_SKILLPROFICENCY]…​`
 
 * Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
 * When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
 * You can remove all the person’s tags by typing `t/` without
-    specifying any tags after it.
+    specifying any tags after it. Same concept applies with the skill field with prefix `s/`
 
 Examples:
 *  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
@@ -141,6 +152,20 @@ Format: `delete INDEX`
 Examples:
 * `list` followed by `delete 2` deletes the 2nd person in the address book.
 * `find Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+
+### Locating persons by skills: `filter`
+
+Finds persons that have the specified skills.
+
+Format: `filter KEYWORD`
+
+* The search is case-insensitive. e.g `java` will match `Java`
+* Only full words will be matched e.g. `C` will not match `C#`
+
+Examples:
+* `find C` returns `Alex Yeoh`, `Bernice Yu` and `Irfan Ibrahim`
+* `filter python` returns `Alex Yeoh`<br>
+  ![result for 'filter C'](images/filterCResult.png)
 
 ### Clearing all entries : `clear`
 
@@ -183,10 +208,10 @@ _Details coming soon ..._
 
 Action | Format, Examples
 --------|------------------
-**Add** | `add n/NAME p/PHONE_NUMBER e/EMAIL g/GITHUB_USERNAME [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com g/jameshooo t/friend t/colleague`
+**Add** | `add n/NAME p/PHONE_NUMBER e/EMAIL g/GITHUB_USERNAME [t/TAG]…​ [s/SKILLNAME_SKILLPROFICENCY]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com g/jameshooo t/friend t/colleague s/java_70`
 **Clear** | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
-**Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [g/GITHUB_USERNAME] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
+**Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [g/GITHUB_USERNAME] [t/TAG]…​ [s/SKILLNAME_SKILLPROFICENCY]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
 **Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
 **List** | `list`
 **Help** | `help`
