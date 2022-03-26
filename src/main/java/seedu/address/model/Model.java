@@ -109,4 +109,12 @@ public interface Model {
      * @throws NullPointerException if {@code comparator or @code predicate} is null.
      */
     void updateDisplayPersonList(Predicate<Person> predicate, Comparator<Person> comparator);
+
+    boolean canUndo();
+
+    void undo();
+
+    boolean canRedo();
+
+    void redo();
 }
