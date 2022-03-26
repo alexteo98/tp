@@ -21,7 +21,7 @@ public class UndoCommand extends Command {
             + ": Undoes the last command and revert to previous version of HackNet.\n";
 
     public static final String MESSAGE_UNDO_SUCCESS = "Last Command undone";
-    public static final String MESSAGE_UNDO_FAILED = "Already ar last command, no commands left to undo!";
+    public static final String MESSAGE_UNDO_FAILED = "Already at last command, no commands left to undo!";
 
     public UndoCommand() {}
 
@@ -29,26 +29,14 @@ public class UndoCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
-        /*
 
-        List<Person> lastShownList = model.getDisplayPersonList();
 
-        if (targetIndex.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+        if (model.canUndo()){
+            model.undo();
+            return new CommandResult(MESSAGE_UNDO_SUCCESS);
         }
 
-        Person personToDelete = lastShownList.get(targetIndex.getZeroBased());
-        model.deletePerson(personToDelete);
-         */
-
-        model.undo();
-
-        //if (model.canUndo()){
-         //   model.undo();
-          //  return new CommandResult(String.format(MESSAGE_UNDO_SUCCESS));
-       // }
-
-        return new CommandResult(String.format("Undone!"));
+        return new CommandResult(MESSAGE_UNDO_FAILED);
     }
 
     @Override

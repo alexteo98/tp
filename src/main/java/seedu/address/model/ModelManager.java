@@ -102,14 +102,16 @@ public class ModelManager implements Model {
 
     @Override
     public void deletePerson(Person target) {
+        logger.info("deleted before" + addressBook);
         addressBook.removePerson(target);
         addressBook.commit();
+        logger.info("deleted after" + addressBook);
     }
 
     @Override
     public void addPerson(Person person) {
         addressBook.addPerson(person);
-        updateDisplayPersonList(PREDICATE_SHOW_ALL_PERSONS);
+
     }
 
     @Override
@@ -123,8 +125,10 @@ public class ModelManager implements Model {
     }
 
     public void undo(){
+        logger.info("undo before" + addressBook);
         addressBook.undo();
-        updateDisplayPersonList(PREDICATE_SHOW_ALL_PERSONS);
+        //updateDisplayPersonList(PREDICATE_SHOW_ALL_PERSONS);
+        logger.info("undo after" + addressBook);
     }
 
     public boolean canRedo() {

@@ -24,14 +24,14 @@ public class VersionedAddressBook extends AddressBook{
     public VersionedAddressBook(ReadOnlyAddressBook toBeCopied){
         this();
         resetData(toBeCopied);
-        this.currentState = 0;
         commit();
+        this.currentState = 0;
     }
 
     public void commit(){
-        //while(addressBookStateList.size() >= currentState + 1){
-        //    addressBookStateList.removeLast();
-        //}
+        while(addressBookStateList.size() > currentState + 1){
+            addressBookStateList.removeLast();
+        }
         UniquePersonList history = new UniquePersonList();
         history.setPersons(this.persons);
         this.addressBookStateList.add(history);
@@ -39,15 +39,16 @@ public class VersionedAddressBook extends AddressBook{
     }
 
     public void undo(){
-        currentState--;
-        this.persons = new UniquePersonList();
-        this.persons.setPersons(this.addressBookStateList.getFirst());
+        if (canUndo()) {
+            currentState--;
+            this.persons.setPersons(this.addressBookStateList.get(currentState));
+        }
     }
 
     public void redo(){
         if (canRedo()){
             currentState++;
-            this.persons = addressBookStateList.get(currentState);
+            this.persons.setPersons(this.addressBookStateList.get(currentState));
         }
     }
 
@@ -59,7 +60,7 @@ public class VersionedAddressBook extends AddressBook{
     }
 
     public boolean canRedo(){
-        return this.currentState == this.addressBookStateList.size() - 1;
+        return this.addressBookStateList.size() - 1 > currentState;
     }
 
     /**
@@ -119,7 +120,11 @@ public class VersionedAddressBook extends AddressBook{
 
     @Override
     public String toString() {
-        return persons.asUnmodifiableObservableList().size() + " persons";
+        String s = "\n";
+        s += persons.asUnmodifiableObservableList().size() + " persons";
+        s += "\n";
+        return s;
+        //return persons.asUnmodifiableObservableList().size() + " persons";
         // TODO: refine later
     }
 
